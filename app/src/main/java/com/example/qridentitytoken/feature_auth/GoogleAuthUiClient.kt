@@ -3,6 +3,7 @@ package com.example.qridentitytoken.feature_auth
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.example.qridentitytoken.R
 import com.example.qridentitytoken.feature_auth.data.SignInResult
 import com.example.qridentitytoken.feature_auth.data.UserData
@@ -18,7 +19,7 @@ import java.util.concurrent.CancellationException
 
 class GoogleAuthUiClient (
     private val context: Context,
-    private val oneTapClient: SignInClient
+    private val oneTapClient: SignInClient,
 ) {
     private val firebaseAuth = Firebase.auth
 

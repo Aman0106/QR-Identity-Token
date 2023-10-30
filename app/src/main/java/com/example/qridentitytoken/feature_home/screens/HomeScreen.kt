@@ -18,11 +18,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.qridentitytoken.R
+import com.example.qridentitytoken.feature_auth.data.UserData
 import com.example.qridentitytoken.navgraphs.Graphs
 
 @Composable
 fun HomeScreen(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    userData: UserData = UserData("", "" , ""),
+    onSignOut: () -> Unit = {}
 ) {
     Column () {
         Column {
