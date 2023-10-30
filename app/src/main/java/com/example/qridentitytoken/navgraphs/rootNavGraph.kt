@@ -46,6 +46,11 @@ fun rootNavGraph(
             composable(Destinations.authScreen) {
                 val viewModel = viewModel<SignInViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
+                
+                LaunchedEffect(key1 = Unit) {// Unit makes it recompose only once when it is first created
+                    if(googleAuthUiClient.getSignedInUser() != null)
+                        navHostController.navigate(Graphs.homeGraph)
+                }
 
                 val launcher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.StartIntentSenderForResult(),
@@ -68,6 +73,9 @@ fun rootNavGraph(
                             "Success",
                             Toast.LENGTH_LONG
                         ).show()
+
+                        navHostController.navigate(Graphs.homeGraph)
+                        viewModel.resetState()
                     }
                 }
 
@@ -93,7 +101,21 @@ fun rootNavGraph(
             route = Graphs.homeGraph
         ) {
             composable(Destinations.homeScreen) {
-                HomeScreen(navHostController = navHostController)
+                HomeScreen(
+                    navHostController = navHostController,
+                    userData = googleAuthUiClient.getSignedInUser(),
+                    onSignOut = {
+                        appLifeCycleScope.launch {
+                            googleAuthUiClient.signOut()
+                            Toast.makeText(
+                                context,
+                                "SignOut Success",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            navHostController.popBackStack()
+                        }
+                    }
+                )
             }
         }
     }
