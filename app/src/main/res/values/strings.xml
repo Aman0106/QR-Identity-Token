@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">QR Identity Token</string>
+    <string name="auth_web_client_id">949611130921-jpqsicd41mura58ukaeuj83u3fb43snk.apps.googleusercontent.com</string>
 </resources>
