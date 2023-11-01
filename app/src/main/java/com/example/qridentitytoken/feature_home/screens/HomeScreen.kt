@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,19 +33,25 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.qridentitytoken.R
 import com.example.qridentitytoken.feature_auth.data.UserData
+import com.example.qridentitytoken.feature_home.ui_comopnents.FillItemDetailsSheet
 import com.example.qridentitytoken.feature_home.ui_comopnents.ProfileInfo
 import com.example.qridentitytoken.feature_home.ui_comopnents.UserItems
 import com.example.qridentitytoken.feature_home.ui_comopnents.dummyList
+import com.example.qridentitytoken.feature_home.viewmodels.HomeScreenViewModel
 import com.example.qridentitytoken.ui.theme.LocalSpacing
 import com.example.qridentitytoken.ui.theme.Spacing
 import com.example.qridentitytoken.ui.theme.spacing
 
 @Composable
 fun HomeScreen(
+    modifier: Modifier = Modifier,
     navHostController: NavHostController,
     userData: UserData?,
-    onSignOut: () -> Unit = {}
+    onSignOut: () -> Unit = {},
 ) {
+    val homeScreenViewModel = remember {
+        HomeScreenViewModel()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -55,15 +62,37 @@ fun HomeScreen(
             thickness = 1.dp,
             modifier = Modifier.padding(MaterialTheme.spacing.extraSmall)
         )
-        UserItems(userItemList = dummyList)
-        CustomFloatingActionButton()
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+        ){
+            Box(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                UserItems(userItemList = dummyList)
+                Box(
+                    contentAlignment =Alignment.BottomEnd,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(MaterialTheme.spacing.large),
+                    content = { CustomFloatingActionButton(homeScreenViewModel) }
+                )
+
+            }
+            if (homeScreenViewModel.isBottomSheetOpen())
+                FillItemDetailsSheet(homeScreenViewModel)
+        }
     }
 
 }
 @Composable
-fun CustomFloatingActionButton() {
+fun CustomFloatingActionButton(
+    homeScreenViewModel: HomeScreenViewModel,
+) {
     FloatingActionButton(
-        onClick = {},
+        onClick = {
+            homeScreenViewModel.openBottomSheet()
+        },
     ) {
         Icon(Icons.Filled.Add, "Floating action button.")
     }
@@ -74,5 +103,5 @@ fun CustomFloatingActionButton() {
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewHomeScreen() {
-    HomeScreen(rememberNavController(), UserData("", "Cat Guy", null))
+    HomeScreen(navHostController = rememberNavController(), userData = UserData("", "Cat Guy", null))
 }

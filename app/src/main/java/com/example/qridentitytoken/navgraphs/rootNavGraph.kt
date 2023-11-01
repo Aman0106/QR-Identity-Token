@@ -90,7 +90,6 @@ fun rootNavGraph(
                                     signInIntentSender ?: return@launch
                                 ).build()
                             )
-
                         }
                     }
                 )

@@ -54,5 +54,13 @@ val dummyList = listOf<UserItem>(
     UserItem("Pen"),
     UserItem("Pen"),
     UserItem("Pen"),
+    UserItem("Pen"),
+    UserItem("Pen"),
+    UserItem("Pen"),
+    UserItem("Pen"),
+    UserItem("Pen"),
+    UserItem("Pen"),
+    UserItem("Pen"),
+    UserItem("Pen"),
     UserItem("Pen")
 )

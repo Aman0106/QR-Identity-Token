@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.qridentitytoken.feature_auth.SignInState
-import com.example.qridentitytoken.navgraphs.Graphs
+
 
 @Composable
 fun AuthScreen(
@@ -45,7 +45,7 @@ fun AuthScreen(
         Column (
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Auth", fontSize = 72.sp)
+            Text(text = "Sign In", fontSize = 72.sp)
             Button(onClick = onSignInCLick) {
                 Text(text = "Sign In")
             }
