@@ -9,4 +9,5 @@ object Graphs {
 object Destinations {
     const val homeScreen = "home"
     const val authScreen = "auth_screen"
+    const val qrScreen = "qr_screen"
 }

@@ -9,9 +9,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,6 +24,8 @@ import com.example.qridentitytoken.feature_auth.GoogleAuthUiClient
 import com.example.qridentitytoken.feature_auth.screens.AuthScreen
 import com.example.qridentitytoken.feature_auth.viewmodel.SignInViewModel
 import com.example.qridentitytoken.feature_home.screens.HomeScreen
+import com.example.qridentitytoken.feature_home.viewmodels.HomeScreenViewModel
+import com.example.qridentitytoken.feature_qrpage.QRScreen
 import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.launch
 
@@ -90,6 +96,7 @@ fun rootNavGraph(
                                     signInIntentSender ?: return@launch
                                 ).build()
                             )
+
                         }
                     }
                 )
@@ -101,7 +108,7 @@ fun rootNavGraph(
         ) {
             composable(Destinations.homeScreen) {
                 HomeScreen(
-                    navHostController = navHostController,
+                    homeScreenViewModel = it.sharedViewModel<HomeScreenViewModel>(navController = navHostController),
                     userData = googleAuthUiClient.getSignedInUser(),
                     onSignOut = {
                         appLifeCycleScope.launch {
@@ -113,9 +120,26 @@ fun rootNavGraph(
                             ).show()
                             navHostController.popBackStack()
                         }
-                    }
+                    },
+                    navController = navHostController
                 )
+            }
+
+            composable(Destinations.qrScreen) {
+                QRScreen(
+                    url = "asasASssadasdads",
+                    userItemName = it.sharedViewModel<HomeScreenViewModel>(navController = navHostController).getCurrentUserItem()!!.name)
             }
         }
     }
+}
+
+@Composable
+inline fun <reified T: ViewModel> NavBackStackEntry.sharedViewModel(navController: NavController): T {
+    val navGraphRoute = destination.parent?.route ?: return viewModel()
+    val parenEntry = remember(this) {
+        navController.getBackStackEntry(navGraphRoute)
+    }
+
+    return viewModel(parenEntry)
 }

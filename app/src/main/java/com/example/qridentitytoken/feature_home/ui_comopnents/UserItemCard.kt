@@ -56,5 +56,5 @@ fun UserItemCard(
 @Preview
 @Composable
 fun PreviewUserItemCard() {
-    UserItemCard(userItem = UserItem("Pen"))
+    UserItemCard(userItem = UserItem("Pen", contact = "aman"))
 }

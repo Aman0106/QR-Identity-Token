@@ -50,17 +50,17 @@ fun PreviewUserItems() {
 }
 
 val dummyList = listOf<UserItem>(
-    UserItem("Pen"),
-    UserItem("Pen"),
-    UserItem("Pen"),
-    UserItem("Pen"),
-    UserItem("Pen"),
-    UserItem("Pen"),
-    UserItem("Pen"),
-    UserItem("Pen"),
-    UserItem("Pen"),
-    UserItem("Pen"),
-    UserItem("Pen"),
-    UserItem("Pen"),
-    UserItem("Pen")
+    UserItem("Pen", contact = "aman"),
+    UserItem("Pen", contact = "aman"),
+    UserItem("Pen", contact = "aman"),
+    UserItem("Pen", contact = "aman"),
+    UserItem("Pen", contact = "aman"),
+    UserItem("Pen", contact = "aman"),
+    UserItem("Pen", contact = "aman"),
+    UserItem("Pen", contact = "aman"),
+    UserItem("Pen", contact = "aman"),
+    UserItem("Pen", contact = "aman"),
+    UserItem("Pen", contact = "aman"),
+    UserItem("Pen", contact = "aman"),
+    UserItem("Pen", contact = "aman"),
 )
