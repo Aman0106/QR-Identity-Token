@@ -56,7 +56,7 @@ fun HomeScreen(
     homeScreenViewModel: HomeScreenViewModel,
     userData: UserData?,
     onSignOut: () -> Unit = {},
-    navController: NavController
+    navController: NavHostController
 ) {
 
 
@@ -79,7 +79,11 @@ fun HomeScreen(
             Box(
                 modifier = Modifier.fillMaxSize(),
             ) {
-                UserItems(userItemList = UserItemsRepository.getUserItems())
+                UserItems(
+                    userItemList = UserItemsRepository.getUserItems(),
+                    navHostController = navController,
+                    homeScreenViewModel = homeScreenViewModel
+                )
                 Box(
                     contentAlignment = Alignment.BottomEnd,
                     modifier = Modifier

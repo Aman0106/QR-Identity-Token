@@ -25,9 +25,11 @@ class HomeScreenViewModel: ViewModel() {
     }
 
     fun getCurrentUserItem() = currentUserItem
-
-    fun submitItemDetails(userItem: UserItem){
+    fun setCurrentUserItem(userItem: UserItem) {
         currentUserItem = userItem
+    }
+    fun submitItemDetails(userItem: UserItem){
+        setCurrentUserItem(userItem)
          UserItemsRepository.addUserItem(userItem)
     }
 }

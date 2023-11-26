@@ -44,24 +44,30 @@ fun rootNavGraph(
 
     NavHost(
         navController = navHostController,
-        startDestination = Graphs.authGraph) {
+        startDestination = Graphs.authGraph
+    ) {
         navigation(
             startDestination = Destinations.authScreen,
             route = Graphs.authGraph
-        ){
+        ) {
             composable(Destinations.authScreen) {
                 val viewModel = viewModel<SignInViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
-                
+
                 LaunchedEffect(key1 = Unit) {// Unit makes it recompose only once when it is first created
-                    if(googleAuthUiClient.getSignedInUser() != null)
-                        navHostController.navigate(Graphs.homeGraph)
+                    if (googleAuthUiClient.getSignedInUser() != null) {
+                        navHostController.navigate(Graphs.homeGraph) {
+                            popUpTo(Graphs.authGraph) {
+                                inclusive = true
+                            }
+                        }
+                    }
                 }
 
                 val launcher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.StartIntentSenderForResult(),
                     onResult = { result ->
-                        if(result.resultCode == RESULT_OK) {
+                        if (result.resultCode == RESULT_OK) {
                             appLifeCycleScope.launch {
                                 val signInResult = googleAuthUiClient.signInWithIntent(
                                     intent = result.data ?: return@launch
@@ -73,7 +79,7 @@ fun rootNavGraph(
                     }
                 )
                 LaunchedEffect(key1 = state.isSignInSuccessful) {
-                    if(state.isSignInSuccessful) {
+                    if (state.isSignInSuccessful) {
                         Toast.makeText(
                             context,
                             "Success",
@@ -127,15 +133,19 @@ fun rootNavGraph(
 
             composable(Destinations.qrScreen) {
                 QRScreen(
-                    url = "asasASssadasdads",
-                    userItemName = it.sharedViewModel<HomeScreenViewModel>(navController = navHostController).getCurrentUserItem()!!.name)
+                    userItemName = it
+                        .sharedViewModel<HomeScreenViewModel>(navController = navHostController)
+                        .getCurrentUserItem()!!.name,
+                    navHostController = navHostController,
+                    userUID = googleAuthUiClient.getSignedInUser()!!.userId
+                )
             }
         }
     }
 }
 
 @Composable
-inline fun <reified T: ViewModel> NavBackStackEntry.sharedViewModel(navController: NavController): T {
+inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(navController: NavController): T {
     val navGraphRoute = destination.parent?.route ?: return viewModel()
     val parenEntry = remember(this) {
         navController.getBackStackEntry(navGraphRoute)

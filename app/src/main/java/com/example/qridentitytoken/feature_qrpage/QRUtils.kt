@@ -1,19 +1,17 @@
-package com.example.qridentitytoken.feature_home
+package com.example.qridentitytoken.feature_qrpage
 
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Build
-import android.os.Environment
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
-import java.io.File
 import java.io.OutputStream
+import java.security.MessageDigest
 import java.util.Objects
 
 object QRUtils {
@@ -62,5 +60,18 @@ object QRUtils {
             e.printStackTrace()
         }
     }
+
+    fun generateUniqueShaString(strToEncrypt: String): String {
+        val messageDigest = MessageDigest.getInstance("SHA-1")
+        messageDigest.update(strToEncrypt.toByteArray())
+        val digest = messageDigest.digest()
+        return digest.toHex()
+    }
+    private fun ByteArray.toHex(): String {
+        return joinToString(separator = "") {
+            it.toString(16).padStart(2, '0')
+        }
+    }
+
 }
 

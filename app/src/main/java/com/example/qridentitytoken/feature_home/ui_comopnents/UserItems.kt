@@ -14,11 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.qridentitytoken.feature_home.data.UserItem
+import com.example.qridentitytoken.feature_home.viewmodels.HomeScreenViewModel
 
 @Composable
 fun UserItems(
-    userItemList: List<UserItem>
+    userItemList: List<UserItem>,
+    navHostController: NavHostController,
+    homeScreenViewModel: HomeScreenViewModel
 ) {
     if (userItemList.isEmpty()) {
         Box(
@@ -38,7 +43,11 @@ fun UserItems(
         columns = GridCells.Fixed(2),
     ) {
         items(userItemList) {userItem ->
-            UserItemCard(userItem = userItem)
+            UserItemCard(
+                userItem = userItem,
+                navHostController = navHostController,
+                homeScreenViewModel = homeScreenViewModel
+                )
         }
     }
 }
@@ -46,7 +55,7 @@ fun UserItems(
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewUserItems() {
-    UserItems(dummyList)
+    UserItems(dummyList, rememberNavController(), HomeScreenViewModel())
 }
 
 val dummyList = listOf<UserItem>(

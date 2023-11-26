@@ -4,12 +4,18 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
 import android.widget.Toast
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -22,30 +28,42 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.qridentitytoken.feature_home.QRUtils
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 
 @Composable
 fun QRScreen(
-    url: String,
     userItemName: String,
+    navHostController: NavHostController,
+    userUID: String
 ) {
     val context = LocalContext.current
-    var selectedSize by remember { mutableStateOf(QrSizes().medium) }
-    val bitmap = remember { QRUtils.generateQRCode(url) }
+    var selectedSize by remember { mutableStateOf(QrSizes().large) }
+    val bitmap = remember {
+        QRUtils.generateQRCode(
+            "${userUID}/$userItemName"
+        )
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxSize()
     ) {
         QRCode(size = selectedSize, bitmap = bitmap)
-        SizeButtons(onSizeSelected = { newSize ->
-            selectedSize = newSize
-        })
+
+        Spacer(modifier = Modifier.height(20.dp))
 
         Button(
             onClick = {
@@ -60,6 +78,8 @@ fun QRScreen(
                             context,
                             "Image Saved in Downloads",
                             Toast.LENGTH_SHORT).show()
+
+                        navHostController.popBackStack()
                     }catch (e: Exception) {
                         e.printStackTrace()
                         Toast.makeText(
@@ -79,77 +99,44 @@ fun QRScreen(
 
 @Composable
 fun QRCode(size: Dp, bitmap: Bitmap?) {
-
     if (bitmap != null) {
-        Image(
-            bitmap = bitmap.asImageBitmap(),
-            contentDescription = "QR Code",
+        Box(
             modifier = Modifier
                 .size(size)
                 .fillMaxWidth()
                 .aspectRatio(1f)
-        )
-    }
-}
-
-
-@Composable
-fun SizeButtons(onSizeSelected: (Dp) -> Unit) {
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
-    ) {
-        SizeButton(
-            onClick = { onSizeSelected(QrSizes().small) },
-            txt = "Small",
-            modifier = Modifier.weight(1f)
-        )
-        SizeButton(
-            onClick = { onSizeSelected(QrSizes().medium) },
-            txt = "Medium",
-            modifier = Modifier.weight(1f)
-        )
-        SizeButton(
-            onClick = { onSizeSelected(QrSizes().large) },
-            txt = "Large",
-            modifier = Modifier.weight(1f)
-        )
-    }
-}
-
-@Composable
-fun SizeButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    txt: String,
-) {
-    Button(
-        onClick = onClick,
-        modifier = modifier
-            .padding(8.dp),
-
         ) {
-        Text(
-            text = txt,
-        )
-    }
-}
+            Image(
+                bitmap = bitmap.asImageBitmap(),
+                contentDescription = "QR Code",
+                modifier = Modifier
+                    .fillMaxSize()
+            )
 
-@Composable
-fun showSnackbar(context: Context, message: String) {
-    // You can implement your own Snackbar or use a library like Accompanist Snackbar
-    // For simplicity, here's a basic Toast
-    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            Canvas(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                val cornerRadius = 50f // Adjust the corner radius as needed
+                val strokeWidth = 4f // Adjust the stroke width as needed
+
+                drawRoundRect(
+                    color = Color.Black, // Change the color as needed
+                    size = this.size,
+                    topLeft = Offset(0f, 0f),
+                    cornerRadius = CornerRadius(cornerRadius, cornerRadius),
+                    style = Stroke(width = strokeWidth)
+                )
+            }
+        }
+    }
 }
 
 
 @Preview(showSystemUi = true)
 @Composable
 fun QRScreenPreview() {
-    QRScreen(url = "Aman", userItemName = "Pen")
+    QRScreen(userItemName = "Pen", rememberNavController(), userUID = "123abc")
 }
 
 data class QrSizes(
