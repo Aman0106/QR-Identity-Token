@@ -1,23 +1,23 @@
 package com.example.qridentitytoken.feature_home.ui_comopnents
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,33 +28,35 @@ import androidx.navigation.compose.rememberNavController
 import com.example.qridentitytoken.feature_home.data.UserItem
 import com.example.qridentitytoken.feature_home.viewmodels.HomeScreenViewModel
 import com.example.qridentitytoken.navgraphs.Destinations
+import com.example.qridentitytoken.ui.theme.QRIdentityTokenTheme
 import com.example.qridentitytoken.ui.theme.spacing
-import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemDetailsSheetContent(
     homeScreenViewModel: HomeScreenViewModel,
-    scaffoldState: BottomSheetScaffoldState,
-    coroutineScope: CoroutineScope,
     navController: NavController
 ) {
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(MaterialTheme.spacing.extraSmall),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val usrName = TextFieldInput(label = "Name")
-        val usrDesc = TextFieldInput(label = "Description")
-        val usrContact = TextFieldInput(label = "Contact")
-        val usrSecCon = TextFieldInput(label = "Secondary Contact")
+        val usrName = textFieldInput(label = "Name")
+        val usrDesc = textFieldInput(label = "Description")
+        val usrContact = textFieldInput(label = "Contact")
+        val usrSecCon = textFieldInput(label = "Secondary Contact")
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
         Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = MaterialTheme.spacing.large),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.inverseSurface
+            ),
             onClick = {
                 //TODO add a check for invalid values
                 homeScreenViewModel.submitItemDetails(
@@ -68,6 +70,7 @@ fun ItemDetailsSheetContent(
             Text(
                 text = "Submit",
                 fontSize = 26.sp,
+                color = MaterialTheme.colorScheme.inverseOnSurface,
                 modifier = Modifier
                     .padding(MaterialTheme.spacing.small)
             )
@@ -77,17 +80,22 @@ fun ItemDetailsSheetContent(
 }
 
 @Composable
-fun TextFieldInput(
+fun textFieldInput(
     label: String = "",
 ): String {
     var txt by remember {
         mutableStateOf("")
     }
-    TextField(
+    OutlinedTextField(
         value = txt,
         onValueChange = {
             txt = it
         },
+        colors = OutlinedTextFieldDefaults.colors(
+            unfocusedBorderColor = MaterialTheme.colorScheme.inverseSurface,
+            focusedBorderColor = MaterialTheme.colorScheme.inverseSurface,
+            focusedLabelColor = MaterialTheme.colorScheme.inverseSurface
+        ),
         label = {
             Text(text = label)
         },
@@ -96,17 +104,16 @@ fun TextFieldInput(
             .padding(MaterialTheme.spacing.medium)
     )
 
-    return txt;
+    return txt
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewItemDetailsSheetContent() {
-    ItemDetailsSheetContent(
-        HomeScreenViewModel(),
-        rememberBottomSheetScaffoldState(),
-        rememberCoroutineScope(),
-        rememberNavController()
-    )
+    QRIdentityTokenTheme {
+        ItemDetailsSheetContent(
+            HomeScreenViewModel(),
+            rememberNavController()
+        )
+    }
 }

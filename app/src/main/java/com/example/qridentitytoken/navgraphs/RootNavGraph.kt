@@ -31,7 +31,7 @@ import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.launch
 
 @Composable
-fun rootNavGraph(
+fun RootNavGraph(
     navHostController: NavHostController,
     context: Context,
     appLifeCycleScope: LifecycleCoroutineScope
@@ -42,8 +42,6 @@ fun rootNavGraph(
             oneTapClient = Identity.getSignInClient(context)
         )
     }
-
-    UserSharedViewModel.setSignedInUser(googleAuthUiClient.getSignedInUser()!!)
 
     NavHost(
         navController = navHostController,
@@ -75,7 +73,7 @@ fun rootNavGraph(
                                 val signInResult = googleAuthUiClient.signInWithIntent(
                                     intent = result.data ?: return@launch
                                 )
-
+                                UserSharedViewModel.setSignedInUser(googleAuthUiClient.getSignedInUser()!!)
                                 viewModel.onSignInResult(signInResult)
                             }
                         }
@@ -95,7 +93,6 @@ fun rootNavGraph(
                 }
 
                 AuthScreen(
-                    navHostController = navHostController,
                     state = state,
                     onSignInCLick = {
                         appLifeCycleScope.launch {
@@ -127,7 +124,11 @@ fun rootNavGraph(
                                 "SignOut Success",
                                 Toast.LENGTH_LONG
                             ).show()
-                            navHostController.popBackStack()
+                            navHostController.navigate(Graphs.authGraph) {
+                                popUpTo(Graphs.homeGraph) {
+                                    inclusive = true
+                                }
+                            }
                         }
                     },
                     navController = navHostController

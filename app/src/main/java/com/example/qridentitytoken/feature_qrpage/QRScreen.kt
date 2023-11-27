@@ -1,6 +1,6 @@
 package com.example.qridentitytoken.feature_qrpage
 
-import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.os.Build
 import android.widget.Toast
@@ -10,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +17,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,9 +29,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
@@ -40,6 +41,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.qridentitytoken.feature_qrpage.ui_components.QRScreenAppBar
+import com.example.qridentitytoken.ui.theme.QRIdentityTokenTheme
+import com.example.qridentitytoken.ui.theme.spacing
 
 
 @Composable
@@ -49,7 +53,7 @@ fun QRScreen(
     userUID: String
 ) {
     val context = LocalContext.current
-    var selectedSize by remember { mutableStateOf(QrSizes().large) }
+    val selectedSize by remember { mutableStateOf(QrSizes().large) }
     val bitmap = remember {
         QRUtils.generateQRCode(
             "${userUID}/$userItemName"
@@ -57,10 +61,13 @@ fun QRScreen(
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
+        QRScreenAppBar(navHostController = navHostController)
+        Spacer(modifier = Modifier.height(100.dp))
         QRCode(size = selectedSize, bitmap = bitmap)
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -88,17 +95,24 @@ fun QRScreen(
                             Toast.LENGTH_SHORT).show()
                     }
                 }
-            }) {
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.inverseSurface,
+                contentColor = MaterialTheme.colorScheme.inverseOnSurface
+            )
+        ) {
             Text(
                 text = "Save",
                 fontSize = 32.sp
-                )
+            )
         }
     }
+
 }
 
 @Composable
 fun QRCode(size: Dp, bitmap: Bitmap?) {
+    val primaryColor = MaterialTheme.colorScheme.primary
     if (bitmap != null) {
         Box(
             modifier = Modifier
@@ -111,17 +125,19 @@ fun QRCode(size: Dp, bitmap: Bitmap?) {
                 contentDescription = "QR Code",
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(MaterialTheme.spacing.large)
+                    .clip(RoundedCornerShape(50.dp))
             )
 
             Canvas(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                val cornerRadius = 50f // Adjust the corner radius as needed
-                val strokeWidth = 4f // Adjust the stroke width as needed
+                val cornerRadius = 100f // Adjust the corner radius as needed
+                val strokeWidth = 6f // Adjust the stroke width as needed
 
                 drawRoundRect(
-                    color = Color.Black, // Change the color as needed
+                    color = primaryColor, // Change the color as needed
                     size = this.size,
                     topLeft = Offset(0f, 0f),
                     cornerRadius = CornerRadius(cornerRadius, cornerRadius),
@@ -133,10 +149,12 @@ fun QRCode(size: Dp, bitmap: Bitmap?) {
 }
 
 
-@Preview(showSystemUi = true)
+@Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun QRScreenPreview() {
-    QRScreen(userItemName = "Pen", rememberNavController(), userUID = "123abc")
+    QRIdentityTokenTheme {
+        QRScreen(userItemName = "Pen", rememberNavController(), userUID = "123abc")
+    }
 }
 
 data class QrSizes(

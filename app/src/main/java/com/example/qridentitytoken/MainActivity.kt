@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import com.example.qridentitytoken.navgraphs.rootNavGraph
+import com.example.qridentitytoken.navgraphs.RootNavGraph
 import com.example.qridentitytoken.ui.theme.QRIdentityTokenTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             QRIdentityTokenTheme {
                 val navController = rememberNavController()
-                rootNavGraph(
+                RootNavGraph(
                     navHostController = navController,
                     context = applicationContext,
                     appLifeCycleScope = lifecycleScope
