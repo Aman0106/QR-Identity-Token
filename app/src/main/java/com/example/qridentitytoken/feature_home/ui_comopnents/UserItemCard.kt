@@ -1,5 +1,6 @@
 package com.example.qridentitytoken.feature_home.ui_comopnents
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,10 +11,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +27,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.qridentitytoken.feature_home.data.UserItem
 import com.example.qridentitytoken.feature_home.viewmodels.HomeScreenViewModel
 import com.example.qridentitytoken.navgraphs.Destinations
+import com.example.qridentitytoken.ui.theme.QRIdentityTokenTheme
+import com.example.qridentitytoken.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,17 +37,18 @@ fun UserItemCard(
     navHostController: NavHostController,
     homeScreenViewModel: HomeScreenViewModel
 ) {
-    Card(
+    OutlinedCard(
+        modifier = Modifier
+            .padding(MaterialTheme.spacing.small)
+            .aspectRatio(1.2f),
+        border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
+            defaultElevation = 4.dp,
         ),
         colors = CardDefaults.cardColors(
-            containerColor = Color.Cyan,
+            containerColor = MaterialTheme.colorScheme.surface,
         ),
-        shape = RoundedCornerShape(25.dp),
-        modifier = Modifier
-            .padding(16.dp)
-            .aspectRatio(1f),
+        shape = RoundedCornerShape(40.dp),
         onClick = {
             homeScreenViewModel.setCurrentUserItem(userItem)
             navHostController.navigate(Destinations.qrScreen)
@@ -54,23 +61,27 @@ fun UserItemCard(
         ) {
 
             Text(
-                text = userItem.name,
+                text = userItem.itemName,
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.displayMedium
+                style = MaterialTheme.typography.displayMedium.copy(
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             )
         }
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 fun PreviewUserItemCard() {
-    UserItemCard(
-        userItem = UserItem("Pen", contact = "aman"),
-        navHostController = rememberNavController(),
-        homeScreenViewModel = HomeScreenViewModel()
-        )
+   QRIdentityTokenTheme {
+       UserItemCard(
+           userItem = UserItem("Pen", contact = "aman"),
+           navHostController = rememberNavController(),
+           homeScreenViewModel = HomeScreenViewModel()
+       )
+   }
 }

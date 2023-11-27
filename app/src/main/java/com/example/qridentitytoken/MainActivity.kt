@@ -18,7 +18,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             QRIdentityTokenTheme {
                 val navController = rememberNavController()
-                rootNavGraph(navHostController = navController, context = applicationContext, appLifeCycleScope = lifecycleScope)
+                rootNavGraph(
+                    navHostController = navController,
+                    context = applicationContext,
+                    appLifeCycleScope = lifecycleScope
+                )
             }
         }
     }

@@ -26,6 +26,7 @@ import com.example.qridentitytoken.feature_auth.viewmodel.SignInViewModel
 import com.example.qridentitytoken.feature_home.screens.HomeScreen
 import com.example.qridentitytoken.feature_home.viewmodels.HomeScreenViewModel
 import com.example.qridentitytoken.feature_qrpage.QRScreen
+import com.example.qridentitytoken.shared_videomodel.UserSharedViewModel
 import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.launch
 
@@ -41,6 +42,8 @@ fun rootNavGraph(
             oneTapClient = Identity.getSignInClient(context)
         )
     }
+
+    UserSharedViewModel.setSignedInUser(googleAuthUiClient.getSignedInUser()!!)
 
     NavHost(
         navController = navHostController,
@@ -135,7 +138,7 @@ fun rootNavGraph(
                 QRScreen(
                     userItemName = it
                         .sharedViewModel<HomeScreenViewModel>(navController = navHostController)
-                        .getCurrentUserItem()!!.name,
+                        .getCurrentUserItem()!!.itemName,
                     navHostController = navHostController,
                     userUID = googleAuthUiClient.getSignedInUser()!!.userId
                 )
