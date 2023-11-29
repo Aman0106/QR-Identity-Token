@@ -130,7 +130,7 @@ fun PreviewHomeScreen() {
     QRIdentityTokenTheme {
         HomeScreen(
             HomeScreenViewModel(),
-            userData = UserData("", "Cat Guy", null),
+            userData = UserData("", "Cat Guy", "null", ""),
             navController = rememberNavController(),
         )
 

@@ -96,7 +96,7 @@ fun ProfileInfo(
 
         ) {
             Text(
-                text = "Welcome, ${userData?.username ?: "Mr. Fluff"}",
+                text = "Welcome, ${userData?.userName ?: "Mr. Fluff"}",
                 style = MaterialTheme.typography.headlineMedium.copy(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -140,7 +140,7 @@ fun UserImage(userData: UserData?) {
 fun PreviewUserInfo() {
     QRIdentityTokenTheme {
         ProfileInfo(
-            userData = UserData("dhwkjd", "Cat", null),
+            userData = UserData("dhwkjd", "Cat","" ,"null"),
             onSignOut = {}
         )
     }

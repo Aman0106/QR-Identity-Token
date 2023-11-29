@@ -26,7 +26,7 @@ import com.example.qridentitytoken.feature_auth.viewmodel.SignInViewModel
 import com.example.qridentitytoken.feature_home.screens.HomeScreen
 import com.example.qridentitytoken.feature_home.viewmodels.HomeScreenViewModel
 import com.example.qridentitytoken.feature_qrpage.QRScreen
-import com.example.qridentitytoken.shared_videomodel.UserSharedViewModel
+import com.example.qridentitytoken.shared_videomodel.UserDataViewModel
 import com.google.android.gms.auth.api.identity.Identity
 import kotlinx.coroutines.launch
 
@@ -52,11 +52,13 @@ fun RootNavGraph(
             route = Graphs.authGraph
         ) {
             composable(Destinations.authScreen) {
-                val viewModel = viewModel<SignInViewModel>()
-                val state by viewModel.state.collectAsStateWithLifecycle()
+                val signInViewModel = viewModel<SignInViewModel>()
+                val state by signInViewModel.state.collectAsStateWithLifecycle()
 
                 LaunchedEffect(key1 = Unit) {// Unit makes it recompose only once when it is first created
                     if (googleAuthUiClient.getSignedInUser() != null) {
+                        UserDataViewModel.setSignedInUser(googleAuthUiClient.getSignedInUser()!!)
+//                        signInViewModel.setDefaultUserData()
                         navHostController.navigate(Graphs.homeGraph) {
                             popUpTo(Graphs.authGraph) {
                                 inclusive = true
@@ -73,8 +75,7 @@ fun RootNavGraph(
                                 val signInResult = googleAuthUiClient.signInWithIntent(
                                     intent = result.data ?: return@launch
                                 )
-                                UserSharedViewModel.setSignedInUser(googleAuthUiClient.getSignedInUser()!!)
-                                viewModel.onSignInResult(signInResult)
+                                signInViewModel.onSignInResult(signInResult)
                             }
                         }
                     }
@@ -88,7 +89,7 @@ fun RootNavGraph(
                         ).show()
 
                         navHostController.navigate(Graphs.homeGraph)
-                        viewModel.resetState()
+                        signInViewModel.resetState()
                     }
                 }
 

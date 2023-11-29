@@ -2,7 +2,7 @@ package com.example.qridentitytoken.feature_home.data
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import com.example.qridentitytoken.shared_videomodel.UserSharedViewModel
+import com.example.qridentitytoken.shared_videomodel.UserDataViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -17,13 +17,13 @@ object UserItemsRepository {
     fun addUserItem(userItem: UserItem) {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("users")
-            .document(UserSharedViewModel.getSignedInUserData()!!.userId)
+            .document(UserDataViewModel.getSignedInUserData()!!.userId)
             .collection("items")
             .document(userItem.itemName)
 
         docRef
             .set(hashMapOf(
-                "contact" to userItem.contact
+                "description" to userItem.description
             ))
             .addOnSuccessListener {
                 Log.d(TAG, "File added Successfully")
@@ -34,7 +34,7 @@ object UserItemsRepository {
 
     suspend fun fetchUserItems(): MutableList<UserItem> {
         val db = Firebase.firestore
-        val docRef = db.collection("users").document(UserSharedViewModel.getSignedInUserData()!!.userId).collection("items")
+        val docRef = db.collection("users").document(UserDataViewModel.getSignedInUserData()!!.userId).collection("items")
 
         docRef.get()
             .addOnSuccessListener { result ->
@@ -46,7 +46,6 @@ object UserItemsRepository {
                     Log.d(TAG, "${doc.id} => ${doc.data}")
                     val userItem = UserItem(
                         itemName = doc.id,
-                        contact = doc.get("contact") as String
                     )
                     userItemsList += userItem
                 }
@@ -63,19 +62,19 @@ object UserItemsRepository {
 
 
     val dummyList = listOf(
-        UserItem("Pen", contact = "aman"),
-        UserItem("Pen", contact = "aman"),
-        UserItem("Pen", contact = "aman"),
-        UserItem("Pen", contact = "aman"),
-        UserItem("Pen", contact = "aman"),
-        UserItem("Pen", contact = "aman"),
-        UserItem("Pen", contact = "aman"),
-        UserItem("Pen", contact = "aman"),
-        UserItem("Pen", contact = "aman"),
-        UserItem("Pen", contact = "aman"),
-        UserItem("Pen", contact = "aman"),
-        UserItem("Pen", contact = "aman"),
-        UserItem("Pen", contact = "aman"),
+        UserItem("Pen"),
+        UserItem("Pen"),
+        UserItem("Pen"),
+        UserItem("Pen"),
+        UserItem("Pen"),
+        UserItem("Pen"),
+        UserItem("Pen"),
+        UserItem("Pen"),
+        UserItem("Pen"),
+        UserItem("Pen"),
+        UserItem("Pen"),
+        UserItem("Pen"),
+        UserItem("Pen"),
     )
 
 }

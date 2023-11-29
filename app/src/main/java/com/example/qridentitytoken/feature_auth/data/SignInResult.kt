@@ -1,7 +1,5 @@
 package com.example.qridentitytoken.feature_auth.data
 
-import com.example.qridentitytoken.R
-
 data class SignInResult(
     val data: UserData?,
     val errorMessage: String?
@@ -9,6 +7,14 @@ data class SignInResult(
 
 data class UserData(
     val userId: String,
-    val username: String?,
+    val userName: String,
+    val userEmail: String,
     val profilePictureUrl: String?,
+)
+
+data class UserGeneratedData(
+    val userName: String,
+    val userEmail: String,
+    val userProfilePictureUrl: String?,
+    val userContactNumber: String?
 )

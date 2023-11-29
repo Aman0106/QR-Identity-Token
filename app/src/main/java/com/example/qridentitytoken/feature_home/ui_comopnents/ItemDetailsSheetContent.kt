@@ -60,7 +60,7 @@ fun ItemDetailsSheetContent(
             onClick = {
                 //TODO add a check for invalid values
                 homeScreenViewModel.submitItemDetails(
-                    UserItem(itemName = usrName, contact = usrContact)
+                    UserItem(itemName = usrName)
                 )
                 homeScreenViewModel.closeBottomSheet()
                 navController.navigate(Destinations.qrScreen)

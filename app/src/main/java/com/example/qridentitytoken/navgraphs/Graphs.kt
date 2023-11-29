@@ -10,4 +10,5 @@ object Destinations {
     const val homeScreen = "home"
     const val authScreen = "auth_screen"
     const val qrScreen = "qr_screen"
+    const val editUserInfoScreen = "edit_user_info_screen"
 }

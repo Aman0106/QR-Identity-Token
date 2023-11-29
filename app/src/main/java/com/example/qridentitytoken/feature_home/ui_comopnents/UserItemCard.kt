@@ -79,7 +79,7 @@ fun UserItemCard(
 fun PreviewUserItemCard() {
    QRIdentityTokenTheme {
        UserItemCard(
-           userItem = UserItem("Pen", contact = "aman"),
+           userItem = UserItem("Pen"),
            navHostController = rememberNavController(),
            homeScreenViewModel = HomeScreenViewModel()
        )

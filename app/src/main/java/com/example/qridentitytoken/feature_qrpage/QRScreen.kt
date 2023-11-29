@@ -54,9 +54,10 @@ fun QRScreen(
 ) {
     val context = LocalContext.current
     val selectedSize by remember { mutableStateOf(QrSizes().large) }
+    val url = "https://qr-identity-token.web.app/?uid=$userUID&itemName=$userItemName"
     val bitmap = remember {
         QRUtils.generateQRCode(
-            "${userUID}/$userItemName"
+            url
         )
     }
     Column(
@@ -153,7 +154,7 @@ fun QRCode(size: Dp, bitmap: Bitmap?) {
 @Composable
 fun QRScreenPreview() {
     QRIdentityTokenTheme {
-        QRScreen(userItemName = "Pen", rememberNavController(), userUID = "123abc")
+        QRScreen(userItemName = "Pen", rememberNavController(), userUID = "dummy")
     }
 }
 
