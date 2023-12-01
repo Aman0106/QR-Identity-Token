@@ -23,6 +23,7 @@ import androidx.navigation.navigation
 import com.example.qridentitytoken.feature_auth.GoogleAuthUiClient
 import com.example.qridentitytoken.feature_auth.screens.AuthScreen
 import com.example.qridentitytoken.feature_auth.viewmodel.SignInViewModel
+import com.example.qridentitytoken.feature_home.screens.EditUserInfoScreen
 import com.example.qridentitytoken.feature_home.screens.HomeScreen
 import com.example.qridentitytoken.feature_home.viewmodels.HomeScreenViewModel
 import com.example.qridentitytoken.feature_qrpage.QRScreen
@@ -143,6 +144,15 @@ fun RootNavGraph(
                         .getCurrentUserItem()!!.itemName,
                     navHostController = navHostController,
                     userUID = googleAuthUiClient.getSignedInUser()!!.userId
+                )
+            }
+
+            composable(Destinations.editUserInfoScreen) {
+                EditUserInfoScreen(
+                    navHostController = navHostController,
+                    homeScreenViewModel = it.sharedViewModel(
+                        navController = navHostController
+                    )
                 )
             }
         }

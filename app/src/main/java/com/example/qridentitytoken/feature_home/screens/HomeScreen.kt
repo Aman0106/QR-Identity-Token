@@ -62,7 +62,7 @@ fun HomeScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
     ) {
-        ProfileInfo(userData = userData, onSignOut = onSignOut)
+        ProfileInfo(userData = userData, onSignOut = onSignOut, navHostController = navController)
 //        Divider(
 //            color = MaterialTheme.colorScheme.inverseSurface,
 //            thickness = 1.dp,

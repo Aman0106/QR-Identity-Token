@@ -121,15 +121,15 @@ fun SaveUserButton(
         ),
         onClick = {
 
-//            UserDataViewModel.setUserGeneratedData(
-//                UserGeneratedData(
-//                    name,
-//                    email,
-//                    contact,
-//                    ""
-//                )
-//            )
-//            homeScreenViewModel.updateUserDetails()
+            UserDataViewModel.setUserGeneratedData(
+                UserGeneratedData(
+                    userName = name,
+                    userEmail = email,
+                    userContactNumber = contact,
+                    userProfilePictureUrl = null
+                )
+            )
+            homeScreenViewModel.updateUserDetails()
 
 
         },

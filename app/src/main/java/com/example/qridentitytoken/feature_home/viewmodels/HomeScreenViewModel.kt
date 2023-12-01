@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.qridentitytoken.feature_home.data.UserItem
 import com.example.qridentitytoken.feature_home.data.UserItemsRepository
+import com.example.qridentitytoken.feature_home.model.FirebaseConnectionModel
 
 class HomeScreenViewModel: ViewModel() {
     private var bottomSheetOpenState by mutableStateOf(false)
@@ -31,5 +32,9 @@ class HomeScreenViewModel: ViewModel() {
     fun submitItemDetails(userItem: UserItem){
         setCurrentUserItem(userItem)
          UserItemsRepository.addUserItem(userItem)
+    }
+
+    fun updateUserDetails() {
+        FirebaseConnectionModel().updateUserInfo()
     }
 }

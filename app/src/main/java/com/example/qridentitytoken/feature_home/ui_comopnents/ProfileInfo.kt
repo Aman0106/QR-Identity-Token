@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,9 +39,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.qridentitytoken.R
 import com.example.qridentitytoken.feature_auth.data.UserData
+import com.example.qridentitytoken.navgraphs.Destinations
 import com.example.qridentitytoken.ui.theme.LocalSpacing
 import com.example.qridentitytoken.ui.theme.QRIdentityTokenTheme
 import com.example.qridentitytoken.ui.theme.spacing
@@ -48,7 +52,8 @@ import com.example.qridentitytoken.ui.theme.spacing
 @Composable
 fun ProfileInfo(
     userData: UserData?,
-    onSignOut: () -> Unit
+    onSignOut: () -> Unit,
+    navHostController: NavHostController
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -82,7 +87,15 @@ fun ProfileInfo(
                 ),
                 color = MaterialTheme.colorScheme.onBackground
             )
-            UserImage(userData = userData)
+
+            Box(
+                modifier = Modifier
+                    .clickable {
+                        navHostController.navigate(Destinations.editUserInfoScreen)
+                    }
+            ) {
+                UserImage(userData = userData)
+            }
 
         }
         Card(
@@ -141,7 +154,8 @@ fun PreviewUserInfo() {
     QRIdentityTokenTheme {
         ProfileInfo(
             userData = UserData("dhwkjd", "Cat","" ,"null"),
-            onSignOut = {}
+            onSignOut = {},
+            navHostController = rememberNavController()
         )
     }
 }
