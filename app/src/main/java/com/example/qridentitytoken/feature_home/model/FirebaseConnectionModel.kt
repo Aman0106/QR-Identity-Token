@@ -1,7 +1,5 @@
 package com.example.qridentitytoken.feature_home.model
 
-import com.example.qridentitytoken.feature_auth.data.UserGeneratedData
-import com.example.qridentitytoken.feature_home.data.UserItem
 import com.example.qridentitytoken.shared_videomodel.UserDataViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -31,10 +30,8 @@ import com.example.qridentitytoken.navgraphs.Destinations
 import com.example.qridentitytoken.ui.theme.QRIdentityTokenTheme
 import com.example.qridentitytoken.ui.theme.spacing
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemDetailsSheetContent(
-    homeScreenViewModel: HomeScreenViewModel,
     navController: NavController
 ) {
 
@@ -59,10 +56,10 @@ fun ItemDetailsSheetContent(
             ),
             onClick = {
                 //TODO add a check for invalid values
-                homeScreenViewModel.submitItemDetails(
+                HomeScreenViewModel.submitItemDetails(
                     UserItem(itemName = usrName)
                 )
-                homeScreenViewModel.closeBottomSheet()
+                HomeScreenViewModel.closeBottomSheet()
                 navController.navigate(Destinations.qrScreen)
 
             },
@@ -112,7 +109,6 @@ fun textFieldInput(
 fun PreviewItemDetailsSheetContent() {
     QRIdentityTokenTheme {
         ItemDetailsSheetContent(
-            HomeScreenViewModel(),
             rememberNavController()
         )
     }

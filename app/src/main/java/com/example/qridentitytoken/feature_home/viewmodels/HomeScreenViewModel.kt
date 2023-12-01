@@ -1,7 +1,5 @@
 package com.example.qridentitytoken.feature_home.viewmodels
 
-import androidx.compose.material3.BottomSheetScaffoldState
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,7 +8,7 @@ import com.example.qridentitytoken.feature_home.data.UserItem
 import com.example.qridentitytoken.feature_home.data.UserItemsRepository
 import com.example.qridentitytoken.feature_home.model.FirebaseConnectionModel
 
-class HomeScreenViewModel: ViewModel() {
+object HomeScreenViewModel: ViewModel() {
     private var bottomSheetOpenState by mutableStateOf(false)
     private var currentUserItem: UserItem? = null
     fun openBottomSheet() {

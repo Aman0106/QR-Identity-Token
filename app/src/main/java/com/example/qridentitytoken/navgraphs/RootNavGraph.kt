@@ -116,7 +116,6 @@ fun RootNavGraph(
         ) {
             composable(Destinations.homeScreen) {
                 HomeScreen(
-                    homeScreenViewModel = it.sharedViewModel<HomeScreenViewModel>(navController = navHostController),
                     userData = googleAuthUiClient.getSignedInUser(),
                     onSignOut = {
                         appLifeCycleScope.launch {
@@ -139,9 +138,7 @@ fun RootNavGraph(
 
             composable(Destinations.qrScreen) {
                 QRScreen(
-                    userItemName = it
-                        .sharedViewModel<HomeScreenViewModel>(navController = navHostController)
-                        .getCurrentUserItem()!!.itemName,
+                    userItemName = HomeScreenViewModel.getCurrentUserItem()!!.itemName,
                     navHostController = navHostController,
                     userUID = googleAuthUiClient.getSignedInUser()!!.userId
                 )
@@ -149,10 +146,7 @@ fun RootNavGraph(
 
             composable(Destinations.editUserInfoScreen) {
                 EditUserInfoScreen(
-                    navHostController = navHostController,
-                    homeScreenViewModel = it.sharedViewModel(
-                        navController = navHostController
-                    )
+                    navHostController = navHostController
                 )
             }
         }

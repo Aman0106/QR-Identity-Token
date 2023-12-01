@@ -26,8 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.qridentitytoken.feature_auth.SignInState
 import com.example.qridentitytoken.feature_qrpage.QRCode
 import com.example.qridentitytoken.feature_qrpage.QRUtils

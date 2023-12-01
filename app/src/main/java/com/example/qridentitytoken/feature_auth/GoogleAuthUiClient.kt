@@ -3,7 +3,6 @@ package com.example.qridentitytoken.feature_auth
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
-import androidx.lifecycle.LifecycleCoroutineScope
 import com.example.qridentitytoken.R
 import com.example.qridentitytoken.feature_auth.data.SignInResult
 import com.example.qridentitytoken.feature_auth.data.UserData
@@ -11,7 +10,6 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.auth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await

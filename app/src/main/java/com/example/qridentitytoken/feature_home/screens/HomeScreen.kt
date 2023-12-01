@@ -9,17 +9,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.BottomSheetScaffoldState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,19 +31,13 @@ import com.example.qridentitytoken.feature_home.ui_comopnents.UserItems
 import com.example.qridentitytoken.feature_home.viewmodels.HomeScreenViewModel
 import com.example.qridentitytoken.ui.theme.QRIdentityTokenTheme
 import com.example.qridentitytoken.ui.theme.spacing
-import kotlinx.coroutines.CoroutineScope
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    homeScreenViewModel: HomeScreenViewModel,
     userData: UserData?,
     onSignOut: () -> Unit = {},
     navController: NavHostController
 ) {
-
-    val scaffoldState = rememberBottomSheetScaffoldState()
-    val coroutineScope = rememberCoroutineScope()
 
     val userItemsState = remember { mutableStateOf(emptyList<UserItem>()) }
 
@@ -63,11 +53,6 @@ fun HomeScreen(
             .background(MaterialTheme.colorScheme.background),
     ) {
         ProfileInfo(userData = userData, onSignOut = onSignOut, navHostController = navController)
-//        Divider(
-//            color = MaterialTheme.colorScheme.inverseSurface,
-//            thickness = 1.dp,
-//            modifier = Modifier.padding(MaterialTheme.spacing.extraSmall)
-//        )
         Box(
             modifier = Modifier
                 .fillMaxSize(),
@@ -78,7 +63,6 @@ fun HomeScreen(
                 UserItems(
                     userItemList = userItemsState.value,
                     navHostController = navController,
-                    homeScreenViewModel = homeScreenViewModel
                 )
                 Box(
                     contentAlignment = Alignment.BottomEnd,
@@ -87,30 +71,23 @@ fun HomeScreen(
                         .padding(MaterialTheme.spacing.large),
                     content = {
                         CustomFloatingActionButton(
-                            homeScreenViewModel,
-                            scaffoldState,
-                            coroutineScope
                         )
                     }
                 )
 
             }
-            if(homeScreenViewModel.isBottomSheetOpen())
-                FillItemDetailsSheet(homeScreenViewModel, navController)
+            if(HomeScreenViewModel.isBottomSheetOpen())
+                FillItemDetailsSheet(navController)
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun CustomFloatingActionButton(
-        homeScreenViewModel: HomeScreenViewModel,
-        scaffoldState: BottomSheetScaffoldState,
-        coroutineScope: CoroutineScope
     ) {
         FloatingActionButton(
             onClick = {
-                homeScreenViewModel.openBottomSheet()
+                HomeScreenViewModel.openBottomSheet()
             },
             containerColor = MaterialTheme.colorScheme.inverseSurface,
             contentColor = MaterialTheme.colorScheme.background
@@ -129,7 +106,6 @@ fun HomeScreen(
 fun PreviewHomeScreen() {
     QRIdentityTokenTheme {
         HomeScreen(
-            HomeScreenViewModel(),
             userData = UserData("", "Cat Guy", "null", ""),
             navController = rememberNavController(),
         )
